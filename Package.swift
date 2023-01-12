@@ -26,11 +26,11 @@ let package = Package(
         .target(
             name: "FBService",
             dependencies: [
-                .product(name: "FirebaseAuth", package: "FBService"),
-                .product(name: "FirebaseFirestore", package: "FBService"),
-                .product(name: "FirebaseFirestoreSwift", package: "FBService"),
-                .product(name: "FirebaseStorage", package: "FBService"),
-                .product(name: "FirebaseFunctions", package: "FBService"),
+                .product(name: "FirebaseAuth", package: "Firebase"),
+                .product(name: "FirebaseFirestore", package: "Firebase"),
+                .product(name: "FirebaseFirestoreSwift", package: "Firebase"),
+                .product(name: "FirebaseStorage", package: "Firebase"),
+                .product(name: "FirebaseFunctions", package: "Firebase"),
                 "BetterCodable"
             ]),
         .testTarget(
