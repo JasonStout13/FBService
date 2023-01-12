@@ -8,3 +8,10 @@
 // "Design is not just what it looks like and feels like. Design is how it works." - Steve Jobs
 
 import Foundation
+
+public enum FirebaseSignInWithAppleError: Error {
+    case noIdentityToken
+    case noTokenString
+    case noAppleIdCredential
+    case noAuthDataResult
+}

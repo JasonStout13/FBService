@@ -7,4 +7,10 @@
 //
 // "Design is not just what it looks like and feels like. Design is how it works." - Steve Jobs
 
-import Foundation
+import FirebaseFunctions
+
+public struct CallableFunctionsService {
+    public static func call(_ name: String, data: Any? = nil) async throws -> HTTPSCallableResult {
+        return try await Functions.functions().httpsCallable(name).call(data)
+    }
+}

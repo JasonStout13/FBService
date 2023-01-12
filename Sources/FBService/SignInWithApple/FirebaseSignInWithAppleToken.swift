@@ -7,4 +7,12 @@
 //
 // "Design is not just what it looks like and feels like. Design is how it works." - Steve Jobs
 
+import AuthenticationServices
 import Foundation
+
+public struct FirebaseSignInWithAppleToken {
+    public let appleIDCredential: ASAuthorizationAppleIDCredential
+    public let fullName: String
+    public let nonce: String
+    public let idTokenString: String
+}

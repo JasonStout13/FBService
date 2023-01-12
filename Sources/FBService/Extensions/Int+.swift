@@ -8,3 +8,9 @@
 // "Design is not just what it looks like and feels like. Design is how it works." - Steve Jobs
 
 import Foundation
+
+public extension Int {
+    func MB() -> Int64 {
+        Int64(self * 1024 * 1024)
+    }
+}

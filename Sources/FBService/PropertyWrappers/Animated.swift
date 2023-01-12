@@ -7,4 +7,9 @@
 //
 // "Design is not just what it looks like and feels like. Design is how it works." - Steve Jobs
 
-import Foundation
+import SwiftUI
+
+@discardableResult
+public func animated<Result>(_ animation: Animation? = .default, _ body: () throws -> Result) rethrows -> Result {
+    try withAnimation(animation, body)
+}

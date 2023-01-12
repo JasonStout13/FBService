@@ -8,3 +8,7 @@
 // "Design is not just what it looks like and feels like. Design is how it works." - Steve Jobs
 
 import Foundation
+
+public enum AuthenticationStateValue {
+    case undefined, suthenticated, notAuthenticated
+}
