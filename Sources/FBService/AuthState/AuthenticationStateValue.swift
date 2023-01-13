@@ -10,5 +10,5 @@
 import Foundation
 
 public enum AuthenticationStateValue {
-    case undefined, suthenticated, notAuthenticated
+    case undefined, authenticated, notAuthenticated
 }
