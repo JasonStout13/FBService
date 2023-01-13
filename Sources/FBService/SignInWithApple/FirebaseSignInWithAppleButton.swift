@@ -11,39 +11,41 @@ import AuthenticationServices
 import FirebaseAuth
 import SwiftUI
 
-public struct FirebaseSignInWIthAppleButton: View {
-    @State private var currentNonce: String? = nil
+public struct FirebaseSignInWithAppleButton: View {
     
     private var label: SignInWithAppleButton.Label
     private var requestedScopes: [ASAuthorization.Scope]?
-    private var onCompletion: ((Result<FirebaseSignInWIthAppleResult, Error) -> Void)
+    private var onCompletion: ((Result<FirebaseSignInWithAppleResult, Error>) -> Void)
     
-    public init(label: SignInWithAppleButton.Label = .signIn, requestedScopes: [ASAuthorization.Scope]? = [.fullName, .email], onCompletion: @escaping ((Result<FirebaseSignInWIthAppleResult, Error>) -> Void) = {_ in}) {
+    @State private var currentNonce: String? = nil
+    
+    public init(label: SignInWithAppleButton.Label = .signIn, requestedScopes: [ASAuthorization.Scope]? = [.fullName, .email], onCompletion: @escaping ((Result<FirebaseSignInWithAppleResult, Error>) -> Void) = {_ in}) {
         self.label = label
         self.requestedScopes = requestedScopes
         self.onCompletion = onCompletion
     }
     
     public var body: some View {
-        SignInWithAppleButton(label) { request in
+        SignInWithAppleButton(label) { (request) in
             request.requestedScopes = requestedScopes
-            let nonce = FirebaseSignInWIthAppleUtils.randomNonceString()
+            let nonce = FirebaseSignInWithAppleUtils.randomNonceString()
             currentNonce = nonce
             request.nonce = FirebaseSignInWithAppleUtils.sha256(nonce)
-        } onCompletion: { result in
+        } onCompletion: { (result) in
             switch result {
             case .success(let authorization):
-                FirebaseSignInWithAppleUtils.createToken(from: autherization, currentNonce: currentNonce) { result in
+                FirebaseSignInWithAppleUtils.createToken(from: authorization, currentNonce: currentNonce) { result in
                     switch result {
                     case .success(let firebaseSignInWithAppleResult):
                         onCompletion(.success(firebaseSignInWithAppleResult))
-                    case .failure(let error):
-                        onCompletion(.failure(error))
+                    case .failure(let err):
+                        onCompletion(.failure(err))
                     }
                 }
-            case .failure(let error):
-                onCompletion(.failure(error))
+            case .failure(let err):
+                onCompletion(.failure(err))
             }
         }
     }
+    
 }

@@ -14,9 +14,10 @@ import Foundation
 import SwiftUI
 
 public struct FirestoreDecoder<T: Codable> {
+    
     public static func getCodable(for reference: DocumentReference) -> Future<T, Error> {
         return Future<T, Error> { completion in
-            getDocuments(reference: reference, completion: completion)
+            getDocument(reference: reference, completion: completion)
         }
     }
     
@@ -33,8 +34,8 @@ public struct FirestoreDecoder<T: Codable> {
             switch result {
             case .success(let documents):
                 subject.send(documents)
-            case .failure(let error):
-                subject.send(completion: .failure(error))
+            case .failure(let err):
+                subject.send(completion: .failure(err))
             }
         }
         
@@ -47,12 +48,10 @@ public struct FirestoreDecoder<T: Codable> {
                 completion(.failure(error))
                 return
             }
-            
             guard let querySnapshot = querySnapshot else {
                 completion(.failure(FirebaseError.noQuerySnapshot))
                 return
             }
-            
             let documents = querySnapshot.documents.compactMap { document in
                 try? document.data(as: T.self)
             }
@@ -60,18 +59,16 @@ public struct FirestoreDecoder<T: Codable> {
         }
     }
     
-    public static func getDocument(reference: DocumentsReference, completion: @escaping (Result<T, Error>) -> ()) {
-        reference.getDocument { documentSnapshot, error in
-            if let error = error {
-                completion(.failure(error))
+    public static func getDocument(reference: DocumentReference, completion: @escaping (Result<T, Error>) -> ()) {
+        reference.getDocument { (documentSnapshot, err) in
+            if let err = err {
+                completion(.failure(err))
                 return
             }
-            
             guard let documentSnapshot = documentSnapshot else {
                 completion(.failure(FirebaseError.noDocumentSnapshot))
                 return
             }
-            
             if !documentSnapshot.exists {
                 completion(.failure(FirebaseError.documentDoesNotExist))
                 return
@@ -83,19 +80,18 @@ public struct FirestoreDecoder<T: Codable> {
             switch result {
             case .success(let object):
                 completion(.success(object))
-            case .failure(let error):
-                completion(.failure(error))
+            case .failure(let err):
+                completion(.failure(err))
             }
         }
     }
     
     public static func getDocuments(query: Query, lastDocumentSnapshot: Binding<DocumentSnapshot?>? = nil, completion: @escaping (Result<[T], Error>) -> ()) {
-        query.getDocuments { querySnapshot, error in
-            if let error = error {
-                completion(.failure(error))
+        query.getDocuments { (querySnapshot, err) in
+            if let err = err {
+                completion(.failure(err))
                 return
             }
-            
             guard let querySnapshot = querySnapshot else {
                 completion(.failure(FirebaseError.noQuerySnapshot))
                 return
@@ -106,7 +102,6 @@ public struct FirestoreDecoder<T: Codable> {
                     completion(.success([]))
                     return
                 }
-                
                 lastDocumentSnapshot!.wrappedValue = lastDocument
             }
             
