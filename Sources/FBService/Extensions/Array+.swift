@@ -11,7 +11,7 @@ import Foundation
 
 public extension Array where Element: Codable & Firestorable & Equatable {
     @discardableResult
-    mutating func append(_ document: Element, collectionPath: String, sortedBy areInIncreasingOrder: ((Element, Element) throws -> Bool)) throws Array {
+    mutating func append(_ document: Element, collectionPath: String, sortedBy areInIncreasingOrder: ((Element, Element) throws -> Bool)) throws -> Array  {
         let newElement = try FirestoreViewContext.create(document, collectionPath: collectionPath)
         self.append(newElement)
         self = Array(self.uniqued(on: { document in

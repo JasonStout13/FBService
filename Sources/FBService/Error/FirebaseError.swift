@@ -15,7 +15,6 @@ public enum FirebaseError: Error {
     case noUid
     case noQuerySnapshot
     case noDocumentSnapshot
-    case noDocumentSnapshot
     case documentDoesNotExist
     case noAuthDataResult
     case noProfile
